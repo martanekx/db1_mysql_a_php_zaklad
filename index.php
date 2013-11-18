@@ -118,6 +118,28 @@
 		$predmety_items = $predmety->LoadAllPredmety();
 		printr($predmety_items);
 		
+		// ukazka for
+		/*
+		for ($i=0; $i < 10; $i++)
+		{
+			echo "$i <br/>";
+		}
+		*/
+		
+		echo "<table>";
+		echo "<tr><td>Zkratka</td><td>Název</td><td>Kredity</td></tr>";
+		
+		if ($predmety_items != null)
+		foreach ($predmety_items as $item)
+		{
+			echo "<tr><td>$item[zkratka]</td><td>$item[nazev]</td><td>$item[kredity]</td></tr>";
+			
+			// takhle radeji ne
+			//echo "<tr><td>".$item["zkratka"]."</td><td>".$item["nazev"]."</td><td>".$item["kredity"]."</td></tr>";
+		}
+
+		echo "</table>";
+		
 		// odpojit od databáze
 		$predmety->Disconnect();
 		
