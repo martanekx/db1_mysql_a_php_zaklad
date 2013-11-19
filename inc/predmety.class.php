@@ -21,6 +21,7 @@ class predmety {
 		$this->connection_type = $connection_type;
 	}
 	
+	
 	/**
 	 * Připojí k vybrané databázi dle konstruktoru.
 	 */
@@ -100,16 +101,20 @@ class predmety {
 		}
 		else
 		{
+			
 			// DIRECT Oracle
 			// Prikaz v SQL, ktery chceme vykonat v databazi.
-			$query = "select * from predmety;";
+			$query = "select * from predmety"; // POZOR: tady nesmi byt strednik, jinak to nefunguje
 			
 			// Navazani pripraveneho SQL prikazu s otevrenym spojenim do databaze.
 			$statement = oci_parse($this->connection, $query);
 			
-			// nacist data a vratit
-			$rows = oci_execute($statement, OCI_NO_AUTO_COMMIT);
-			printr($rows);
+			// Provest - execute
+			oci_execute($statement, OCI_NO_AUTO_COMMIT);
+			
+			// nacist data
+			oci_fetch_all($statement, $rows, 0, -1, OCI_FETCHSTATEMENT_BY_ROW);
+			//printr($rows);
 			
 			// uvolnit statement
 			oci_free_statement($statement);

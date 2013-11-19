@@ -7,13 +7,15 @@
 <?php 
 
 	// zapnutí výpisu všech chyb
-	error_reporting(E_ALL);
+	//error_reporting(E_ALL);
 
 	// nacist konfiguraci
 	require_once("inc/db_settings.inc.php");
 
 	// nacist databazovou vrstvu
 	require_once("inc/predmety.class.php");
+	echo "<!-- objekt predmety.class.php je nacten -->";
+	
 	
 	// pomocna funkce
 	if (!function_exists("printr"))
@@ -181,6 +183,7 @@
 		// konec vlozit predmet
 		*/
 		
+		
 		// nacti vsechny predmety z databaze
 		echo "<p>Seznam předmětů z databáze:</p>";
 		$predmety_items = $predmety->LoadAllPredmety();
@@ -189,7 +192,7 @@
 		
 		// odpojit od databáze
 		$predmety->Disconnect();
-		
+	
 	// ***************************************************************************
 	// ***********   KONEC Oracle  ***********************************************
 	// ***************************************************************************
