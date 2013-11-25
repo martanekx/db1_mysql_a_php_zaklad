@@ -3,7 +3,7 @@
 /**
  * Databázová vrstva - ukázka napojení na databázi z PHP.
  * 
- * @author Ing. Martin Dostal
+ * @author Ing. Martin Dostal a Ing. Martin Zíma, PhD
  *
  */
 class predmety {
@@ -183,43 +183,42 @@ class predmety {
 			$insert_columns = "";
 			$insert_values  = "";
 			
+			
+			
 			if ($predmet != null)
 			foreach ($predmet as $column => $value)
 			{
 				// pridat carky
 				if ($insert_columns != "") $insert_columns .= ", ";
-				if ($insert_columns != "") $insert_values .= ", ";
+				if ($insert_values != "") $insert_values .= ", ";
 						
-				$insert_columns .= "`$column`";
+				$insert_columns .= "$column";
 				$insert_values .= ":$column";
+				
 			}
 					
 			// slozit query
 			// Poznámka: název tabulky by měl být přes PHP konstantu
-			$stmt_text = "insert into `predmety` ($insert_columns) values ($insert_values);";
+			$stmt_text = "insert into predmety ($insert_columns) values ($insert_values)";
 			echo "SQL pro INSERT - statement: ".$stmt_text;
 			$stmt = oci_parse($this->connection, $stmt_text);
-			//printr($stmt);
 			
 			// NAVAZAT HODNOTY k otaznikum dle poradi od 1
-			$bind_param_number = 1;
 				
 			if ($predmet != null)
 			foreach ($predmet as $column => $value)
 			{
-				// melo by to jit i nejak ciselne
-				
-				// nebo textove
-				oci_bind_by_name($stmt, ":$column", $value);
-				
-				$bind_param_number ++;
+				// tuto chybu nasel Martin Zíma
+				oci_bind_by_name($stmt, ":$column", $predmet[$column]);
+				//oci_bind_by_name($stmt, ":$column", $value);  - nefunguje, viz http://www.php.net/manual/en/function.oci-bind-by-name.php
 			}
+			
 			
 			// provest dotaz
 			$result = oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
-			printr($result);
+			//printr($result);
 			
-			$chyba = oci_error();
+			$chyba = oci_error($stmt);
 			printr($chyba);
 			
 			// KONEC Oracle
